@@ -1,31 +1,33 @@
 const { sum, subtract, mult, divide} = require('../app/4operations');
 const { getEmpleado, getSalario} = require('../app/AS-AW_N1_ex1_intent2')
-const {printData} = require('../app/AS-AW_N1_ex2_intent2')
+const { printData } = require('../app/AS-AW_N1_ex2_intent2')
+const { getEmpleado: getEmpleadoTimeOut, getSalario: getSalarioTimeOut } = require('../app/AS-AW_N2_ex1_intent2')
 
 
+// NIVEL 1
 //math tests
-test('adds 1 + 2 to equal 3', () => {
-  expect(sum(1, 2)).toBe(3);
-});
-
-test('subtract 1 - 2 to equal -1', () => {
-    expect(subtract(1, 2)).toBe(-1)
+describe('math tests', () => {
+    test('adds 1 + 2 to equal 3', () => {
+        expect(sum(1, 2)).toBe(3);
+      });
+      
+      test('subtract 1 - 2 to equal -1', () => {
+          expect(subtract(1, 2)).toBe(-1)
+      })
+      
+      test('multiply 3 * 2 to equal 6', () => {
+          expect(mult(3, 2)).toBe(6)
+      })
+      
+      test('divide 4 / 2 to equal 2', () => {
+          expect(divide(4, 2)).toBe(2)
+      })
 })
 
-test('multiply 3 * 2 to equal 6', () => {
-    expect(mult(3, 2)).toBe(6)
-})
-
-test('divide 4 / 2 to equal 2', () => {
-    expect(divide(4, 2)).toBe(2)
-})
-
-
-
-
-//getEmpleado tests
+//getEmpleado tests, Async / Await Nivell 1 - Exercici 1 && Promises & Callbacks Nivell 2 - Exercici
 
 describe ('getEmpleado', () => {
+
     test('passing an object id equals object', () => {
         return getEmpleado(1).then(data => {
             expect(typeof data).toBe("object")
@@ -61,9 +63,6 @@ describe ('getEmpleado', () => {
         return getEmpleado(1.4).catch(e => expect(e).toMatch('error'))
     })
 })
-
-  
-
 
 // getSalario tests
 describe('getSalario', () => {
@@ -122,8 +121,7 @@ describe('getSalario', () => {
     })
 })
 
-
- // printData() tests
+ // printData() tests Async / Await Nivell 2 - Exercici 1
 describe('printData', () => {
     test('passing the id 1 to printData logs \'Linux Torvalds 4000\'', async () => {
         try {
@@ -158,5 +156,21 @@ describe('printData', () => {
     }
     })
 })
+
+//jest fake timers Async / Await Nivell 2 Exercici 1
+test('resolves in a given amount of time', async () => {
+    jest.useFakeTimers()
+    getEmpleadoTimeOut(1).then(() => jest.advanceTimersByTime(2000));
+    
+})
+
+// test('resolves in a given amount of time_OLD', async () => {
+//     jest.useFakeTimers()
+//     // jest.setTimeout(10000)
+//     // this is in a promise.reoslve.then to not 'lock' on the await
+//     Promise.resolve().then(() => jest.advanceTimersByTime(2000));
+//     await getEmpleadoTimeOut(1)
+// })
+
 
 

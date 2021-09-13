@@ -26,7 +26,7 @@ const getEmpleado = (id)=>{
     return new Promise ((resolve,reject)=>{
         let empleado = employees.find(x => x.id === id)
         if (empleado){
-            setTimeout(()=>{resolve(empleado)}, 2000);
+            resolve(empleado)
         } else {
             reject('error')
         }           
@@ -35,7 +35,8 @@ const getEmpleado = (id)=>{
 
 
 
-const getSalario = async (obj)=>{
+
+const getSalario = (obj)=>{
     return new Promise ((resolve, reject)=>{
         let id = obj.id
         let salario = salaries.find(x => x.id === id).salary
@@ -48,13 +49,17 @@ const getSalario = async (obj)=>{
 }
 
 
+getEmpleado(1)
+    .then(empleado => {
+        getSalario(empleado)
+        .then(salario => console.log(empleado, salario))
+    })
+    .catch((error)=>{console.log(error)})
 
-async function printData (id) {
-    const employee = await getEmpleado(id) 
-    const salary = await getSalario(employee)
-    console.log(employee.name, salary);
 
-}
+// getEmpleado(1)
+//     .then(empleado=>console.log(empleado.id, empleado.name))
 
-printData(2);
+//     .then(empleado=>console.log(getSalario(empleado)))
 
+//     .catch((error)=>{console.log(error)})
