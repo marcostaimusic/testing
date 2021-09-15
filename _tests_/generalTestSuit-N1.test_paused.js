@@ -1,7 +1,7 @@
 const { sum, subtract, mult, divide} = require('../app/4operations');
 const { getEmpleado, getSalario} = require('../app/AS-AW_N1_ex1_intent2')
 const { printData } = require('../app/AS-AW_N1_ex2_intent2')
-const { getEmpleado: getEmpleadoTimeOut, getSalario: getSalarioTimeOut } = require('../app/AS-AW_N2_ex1_intent2')
+const { getEmpleado: getEmpleadoTimeOut } = require('../app/AS-AW_N2_ex1_intent2')
 
 
 // NIVEL 1
