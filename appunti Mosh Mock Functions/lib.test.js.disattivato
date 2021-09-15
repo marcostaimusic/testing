@@ -1,0 +1,76 @@
+const lib = require('./lib')
+const db = require('./db') // lo importo perchè poi lo uso per riassegnare la funzione getCustomerSync()
+const mail = require('./mail')
+
+describe('applydiscount', () => {
+    it('should apply 10% discount if customer has more than 10 points', () => {
+        //fake/mock implementation of getCustomerSync
+        db.getCustomerSync = function(customerId){
+            console.log('Fake reading customer')
+            return {id: customerId, points: 20}
+        }
+
+
+        const order = { customerId: 1, totalPrice: 10}
+        lib.applyDiscount(order) //applyDiscount invoca db.getCustomerSync, e la prende dal test, non dal vero db
+        expect(order.totalPrice).toBe(9)
+    })
+})
+
+
+//implementazione esplicita del test su notifyCustomer, usando logica da vanilla javascript
+describe('notifyCustomer', () => {
+    it('should send an email to the customer', () => {
+        db.getCustomerSync = function (customerId) {
+            return { email: 'a', }
+        }
+
+        let mailSent = false
+        
+        mail.send = function(email, message){
+            return mailSent = true
+        }
+
+        // se notifyCustomer funziona, a un certo punto invocherà mail.send che ritornerà mailSent = true
+        // con questo test determiniamo se il mock mail.send viene invocato dal vero lib.notifyCustomer
+        //notifyCustomer invoca db.getCustomerSync nella versione del test, e quindi, se funziona, invoca il mock mail.send
+        lib.notifyCustomer({customerId: 1}) 
+    })
+})
+
+//implementazione con jest.fn() del test su notifyCustomer
+describe('notifyCustomer', () => {
+    it('should send an email to the customer', () => {
+
+        //const mockFunction = jest.fn()
+        
+        //esempio sincrono
+        // mockFunction.returnValue(1)
+        // mockFunction()
+
+        //esempio asincrono
+
+        // mockFunction.mockResolveValue(1)
+        
+        // oppure 
+        
+        // mockFunction.mockRejectedValue(new Error('some error message'))
+        // const result = await mockFunction()
+
+        db.getCustomerSync = jest.fn().mockReturnValue({ email: 'a' })
+        mail.send = jest.fn()
+
+        lib.notifyCustomer({customerId: 1}) 
+
+        expect(mail.send).toHaveBeenCalled()
+        // oppure anche 
+        // expect(mail.send).toHaveBeenCalledWith() ma solo per numeri, non va troppo bene con gli string
+        // la mock function mail.send ha una proprietà mock con una sottoproprietà call che ritorna i valori passati alla funzione
+        // in forma di array; il primo valore è la 'a' di email, il secondo è il messaggio ritornato da lib.notifyCustomer,
+        // come si vede dal terzo expect qui sotto. Il secondo expect mi ritorna se almeno c'è la parola 'order' nel messaggio di notifica
+        expect(mail.send.mock.calls[0][0]).toBe('a') 
+        expect(mail.send.mock.calls[0][1]).toMatch(/order/)
+        expect(mail.send.mock.calls[0][1]).toBe("Your order was placed succesfully")
+        expect(mail.send.mock.calls[0][2]).toBe(undefined) // non c'è un terzo elemento nell'array, quindi il test passa
+    })
+})
