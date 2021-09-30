@@ -14,9 +14,7 @@ The file **`generalTestSuit-N1.test.js`** contains all the tests for:
 - Crea els tests corresponents per verificar el funcionament de l'exercici Promises & Callbacks Nivell 2 - Exercici 3
 - Verifica mitjançant tests l'execució de l'exercici Async / Await Nivell 2 Exercici 1 utilitzant Jest Fake Timers.
 
-and 
-
-#### Nivell 3
+and #### Nivell 3
 
 - Utilitzant com a base l'exercici Async / Await Nivells 2 i 3, crea un test que forci errors de funcionament i verifiqui que l'error llançat per la funció és l'esperat.
 
