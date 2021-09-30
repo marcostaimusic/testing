@@ -4,6 +4,8 @@ Testing exercises using Jest :
 
 `npm install --save-dev jest` and to run tests `npm run test`
 
+The test files can be found in the \_tests\_ folder
+
 The file **`generalTestSuit-N1.test.js`** contains all the tests for:
 
 #### Nivell 1
